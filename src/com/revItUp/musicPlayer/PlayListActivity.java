@@ -2,8 +2,10 @@ package com.revItUp.musicPlayer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
 
 import com.revItUp.musicPlayer.R;
+import com.revItUp.musicPlayer.SongsManager.GetSongList;
 
 import android.app.ListActivity;
 import android.content.Intent;
@@ -28,7 +30,17 @@ public class PlayListActivity extends ListActivity {
 
 		SongsManager plm = new SongsManager();
 		// get all songs from sdcard
-		this.songsList = plm.getPlayList();
+		GetSongList getPL =  plm.new GetSongList();
+		getPL.execute();
+		try {
+			this. songsList = getPL.get();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		// looping through playlist
 		for (int i = 0; i < songsList.size(); i++) {
@@ -59,7 +71,7 @@ public class PlayListActivity extends ListActivity {
 				
 				// Starting new intent
 				Intent in = new Intent(getApplicationContext(),
-						AndroidBuildingMusicPlayerActivity.class);
+						MusicPlayerActivity.class);
 				// Sending songIndex to PlayerActivity
 				in.putExtra("songIndex", songIndex);
 				setResult(100, in);

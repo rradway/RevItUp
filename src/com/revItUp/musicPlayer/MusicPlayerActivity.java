@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.concurrent.ExecutionException;
 
 import com.revItUp.musicPlayer.R;
+import com.revItUp.musicPlayer.SongsManager.GetSongList;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -19,7 +21,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class AndroidBuildingMusicPlayerActivity extends Activity implements OnCompletionListener, SeekBar.OnSeekBarChangeListener {
+public class MusicPlayerActivity extends Activity implements OnCompletionListener, SeekBar.OnSeekBarChangeListener {
 
 	private ImageButton btnPlay;
 	private ImageButton btnForward;
@@ -35,9 +37,11 @@ public class AndroidBuildingMusicPlayerActivity extends Activity implements OnCo
 	private TextView songTotalDurationLabel;
 	// Media Player
 	private  MediaPlayer mp;
+	
 	// Handler to update UI timer, progress bar etc,.
 	private Handler mHandler = new Handler();;
 	private SongsManager songManager;
+	private	GetSongList getPL;
 	private Utilities utils;
 	private int seekForwardTime = 5000; // 5000 milliseconds
 	private int seekBackwardTime = 5000; // 5000 milliseconds
@@ -76,7 +80,17 @@ public class AndroidBuildingMusicPlayerActivity extends Activity implements OnCo
 		mp.setOnCompletionListener(this); // Important
 		
 		// Getting all songs list
-		songsList = songManager.getPlayList();
+		getPL =  songManager.new GetSongList();
+		getPL.execute();
+		try {
+			songsList = getPL.get();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		// By default play first song
 		playSong(0);

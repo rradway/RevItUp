@@ -2,7 +2,7 @@
 <resources>
 
     <string name="hello">Hello World, AndroidBuildingMusicPlayerActivity!</string>
-    <string name="app_name">AndroidBuildingMusicPlayer</string>
+    <string name="app_name">RevItUp</string>
     <string name="playlistButton">Playlist Button</string>
     <string name="center">center</string>
     <string name="_sdcard_">/sdcard/</string>
