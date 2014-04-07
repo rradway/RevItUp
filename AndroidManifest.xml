@@ -34,6 +34,12 @@
             android:name="CreateNewUserActivity" />
         <activity
             android:name="PlayListMakerActivity" />
+        <activity
+            android:name="WorkoutMenuActivity" />
+        <activity
+            android:name="WorkoutMakerActivity" />
+        <activity
+            android:name="NewIntervalActivity" />
     </application>
 
 </manifest>

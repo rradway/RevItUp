@@ -8,6 +8,7 @@ import java.util.concurrent.ExecutionException;
 
 import com.revItUp.musicPlayer.R;
 import com.revItUp.musicPlayer.SongsManager.GetSongList;
+import com.revItUp.musicPlayer.PlaylistMaker;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -16,6 +17,7 @@ import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -31,6 +33,7 @@ public class MusicPlayerActivity extends Activity implements OnCompletionListene
 	private ImageButton btnPlaylist;
 	private ImageButton btnRepeat;
 	private ImageButton btnShuffle;
+	private Button btnWorkouts;
 	private SeekBar songProgressBar;
 	private TextView songTitleLabel;
 	private TextView songCurrentDurationLabel;
@@ -49,7 +52,11 @@ public class MusicPlayerActivity extends Activity implements OnCompletionListene
 	private boolean isShuffle = false;
 	private boolean isRepeat = false;
 	private ArrayList<HashMap<String, String>> songsList = new ArrayList<HashMap<String, String>>();
-	
+	private ArrayList<Integer> workoutIntervals;
+	private String workoutName;
+	private ArrayList<Integer> workoutPlayList;
+	private boolean workoutFlag = false;
+	private int workoutIndex;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -65,6 +72,7 @@ public class MusicPlayerActivity extends Activity implements OnCompletionListene
 		btnPlaylist = (ImageButton) findViewById(R.id.btnPlaylist);
 		btnRepeat = (ImageButton) findViewById(R.id.btnRepeat);
 		btnShuffle = (ImageButton) findViewById(R.id.btnShuffle);
+		btnWorkouts = (Button) findViewById(R.id.btnWorkouts);
 		songProgressBar = (SeekBar) findViewById(R.id.songProgressBar);
 		songTitleLabel = (TextView) findViewById(R.id.songTitle);
 		songCurrentDurationLabel = (TextView) findViewById(R.id.songCurrentDurationLabel);
@@ -93,7 +101,7 @@ public class MusicPlayerActivity extends Activity implements OnCompletionListene
 		}
 		
 		// By default play first song
-		playSong(0);
+	//	playSong(0);
 				
 		/**
 		 * Play button click event
@@ -175,13 +183,26 @@ public class MusicPlayerActivity extends Activity implements OnCompletionListene
 			@Override
 			public void onClick(View arg0) {
 				// check if next song is there or not
-				if(currentSongIndex < (songsList.size() - 1)){
-					playSong(currentSongIndex + 1);
-					currentSongIndex = currentSongIndex + 1;
-				}else{
-					// play first song
-					playSong(0);
-					currentSongIndex = 0;
+				
+				if(workoutFlag)
+				{
+					playSong(workoutPlayList.get(++workoutIndex));
+					if(workoutIndex>= workoutPlayList.size())
+					{
+						//workout finished
+						workoutFlag = false;
+					}
+				}
+				else
+				{
+					if(currentSongIndex < (songsList.size() - 1)){
+						playSong(currentSongIndex + 1);
+						currentSongIndex = currentSongIndex + 1;
+					}else{
+						// play first song
+						playSong(0);
+						currentSongIndex = 0;
+					}
 				}
 				
 			}
@@ -195,13 +216,22 @@ public class MusicPlayerActivity extends Activity implements OnCompletionListene
 			
 			@Override
 			public void onClick(View arg0) {
-				if(currentSongIndex > 0){
-					playSong(currentSongIndex - 1);
-					currentSongIndex = currentSongIndex - 1;
-				}else{
-					// play last song
-					playSong(songsList.size() - 1);
-					currentSongIndex = songsList.size() - 1;
+				
+				if(workoutFlag)
+				{
+					if(workoutIndex ==0) workoutIndex = 1;
+					playSong(workoutPlayList.get(--workoutIndex));
+				}
+				else
+				{
+					if(currentSongIndex > 0){
+						playSong(currentSongIndex - 1);
+						currentSongIndex = currentSongIndex - 1;
+					}else{
+						// play last song
+						playSong(songsList.size() - 1);
+						currentSongIndex = songsList.size() - 1;
+					}
 				}
 				
 			}
@@ -268,6 +298,15 @@ public class MusicPlayerActivity extends Activity implements OnCompletionListene
 			}
 		});
 		
+		btnWorkouts.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				Intent i = new Intent(getApplicationContext(), WorkoutMenuActivity.class);
+				startActivityForResult(i,110);		
+			}
+		});
+		
 	}
 	
 	/**
@@ -282,6 +321,20 @@ public class MusicPlayerActivity extends Activity implements OnCompletionListene
          	 currentSongIndex = data.getExtras().getInt("songIndex");
          	 // play selected song
              playSong(currentSongIndex);
+        }
+        else if(resultCode == 110)
+        {
+        	int tFlag = data.getExtras().getInt("WorkOutFlag");
+        	if(tFlag!=-1)
+        	{
+        		//recieve workout interval data
+        		workoutIntervals = data.getExtras().getIntegerArrayList("workout");
+        		workoutName = data.getExtras().getString("workoutName");
+        		
+        		//create playlist
+        		generateWorkoutPlaylist();
+        		
+        	}
         }
  
     }
@@ -403,14 +456,27 @@ public class MusicPlayerActivity extends Activity implements OnCompletionListene
 			currentSongIndex = rand.nextInt((songsList.size() - 1) - 0 + 1) + 0;
 			playSong(currentSongIndex);
 		} else{
-			// no repeat or shuffle ON - play next song
-			if(currentSongIndex < (songsList.size() - 1)){
-				playSong(currentSongIndex + 1);
-				currentSongIndex = currentSongIndex + 1;
-			}else{
-				// play first song
-				playSong(0);
-				currentSongIndex = 0;
+			//play workout music
+			if(workoutFlag)
+			{
+				playSong(workoutPlayList.get(++workoutIndex));
+				if(workoutIndex>= workoutPlayList.size())
+				{
+					//workout finished
+					workoutFlag = false;
+				}
+			}
+			else
+			{
+				// no repeat or shuffle ON - play next song
+				if(currentSongIndex < (songsList.size() - 1)){
+					playSong(currentSongIndex + 1);
+					currentSongIndex = currentSongIndex + 1;
+				}else{
+					// play first song
+					playSong(0);
+					currentSongIndex = 0;
+				}
 			}
 		}
 	}
@@ -420,5 +486,24 @@ public class MusicPlayerActivity extends Activity implements OnCompletionListene
 	 super.onDestroy();
 	    mp.release();
 	 }
+	
+	public void generateWorkoutPlaylist()
+	{
+		// do stuff with workoutIntervals
+		System.out.println("fdsa0");
+		PlaylistMaker pm = new PlaylistMaker(workoutIntervals);
+		System.out.println("fdsa3");
+		workoutPlayList = pm.getPlayList();
+		System.out.println("playlistlength:" + workoutPlayList.size());
+		
+		for(int i=0;i<workoutPlayList.size();i++)
+		{
+			System.out.print(workoutPlayList.get(i));
+		}
+		System.out.println("\n\n");
+        workoutFlag = true;
+        workoutIndex = 0;
+        playSong(workoutPlayList.get(0));
+	}
 	
 }
