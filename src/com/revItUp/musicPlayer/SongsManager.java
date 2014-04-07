@@ -51,10 +51,17 @@ public class SongsManager {
 					mmr.setDataSource(file.getPath());
 					String title = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
 					String artist = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
-					song.put("tempo", getTempo(artist,title).toString());
-					song.put("energy", getEnergy(artist, title).toString());
-					song.put("loudness", getLoudness(artist, title).toString());
-					song.put("echoNestInfo", getInfoStr(artist, title));
+					if(SongFound(artist,title) == false)
+					{
+						continue;
+					}
+					else
+					{
+						song.put("tempo", getTempo(artist,title).toString());
+						song.put("energy", getEnergy(artist, title).toString());
+						song.put("loudness", getLoudness(artist, title).toString());
+						song.put("echoNestInfo", getInfoStr(artist, title));
+					}
 				} catch (EchoNestException e) {
 					e.printStackTrace();
 				}
@@ -68,7 +75,19 @@ public class SongsManager {
 		// return songs list array
 		return songsList;
 	}
-	
+	public boolean SongFound(String artistName, String title) throws EchoNestException
+	{
+		SongParams p = new SongParams();
+	    p.setArtist(artistName);
+	    p.setTitle(title);
+	    p.setResults(1);
+	    p.includeAudioSummary();
+	    List<Song> songs = en.searchSongs(p);
+        if (songs.size() > 0) {
+        	return true;
+        }
+        return false;
+	}
 	public Double getTempo(String artistName, String title)
             throws EchoNestException {
         SongParams p = new SongParams();

@@ -16,6 +16,7 @@ import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -31,6 +32,7 @@ public class MusicPlayerActivity extends Activity implements OnCompletionListene
 	private ImageButton btnPlaylist;
 	private ImageButton btnRepeat;
 	private ImageButton btnShuffle;
+	private Button btnWorkouts;
 	private SeekBar songProgressBar;
 	private TextView songTitleLabel;
 	private TextView songCurrentDurationLabel;
@@ -49,7 +51,8 @@ public class MusicPlayerActivity extends Activity implements OnCompletionListene
 	private boolean isShuffle = false;
 	private boolean isRepeat = false;
 	private ArrayList<HashMap<String, String>> songsList = new ArrayList<HashMap<String, String>>();
-	
+	private ArrayList<Integer> workoutIntervals;
+	private String workoutName;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -65,6 +68,7 @@ public class MusicPlayerActivity extends Activity implements OnCompletionListene
 		btnPlaylist = (ImageButton) findViewById(R.id.btnPlaylist);
 		btnRepeat = (ImageButton) findViewById(R.id.btnRepeat);
 		btnShuffle = (ImageButton) findViewById(R.id.btnShuffle);
+		btnWorkouts = (Button) findViewById(R.id.btnWorkouts);
 		songProgressBar = (SeekBar) findViewById(R.id.songProgressBar);
 		songTitleLabel = (TextView) findViewById(R.id.songTitle);
 		songCurrentDurationLabel = (TextView) findViewById(R.id.songCurrentDurationLabel);
@@ -268,6 +272,15 @@ public class MusicPlayerActivity extends Activity implements OnCompletionListene
 			}
 		});
 		
+		btnWorkouts.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				Intent i = new Intent(getApplicationContext(), WorkoutMenuActivity.class);
+				startActivityForResult(i,110);		
+			}
+		});
+		
 	}
 	
 	/**
@@ -282,6 +295,19 @@ public class MusicPlayerActivity extends Activity implements OnCompletionListene
          	 currentSongIndex = data.getExtras().getInt("songIndex");
          	 // play selected song
              playSong(currentSongIndex);
+        }
+        else if(resultCode == 110)
+        {
+        	int tFlag = data.getExtras().getInt("WorkOutFlag");
+        	if(tFlag!=0)
+        	{
+        		//recieve workout interval data
+        		workoutIntervals = data.getExtras().getIntegerArrayList("workout");
+        		workoutName = data.getExtras().getString("workoutName");
+        		
+        		//create playlist
+        		generateWorkoutPlaylist();
+        	}
         }
  
     }
@@ -420,5 +446,10 @@ public class MusicPlayerActivity extends Activity implements OnCompletionListene
 	 super.onDestroy();
 	    mp.release();
 	 }
+	
+	public void generateWorkoutPlaylist()
+	{
+		// do stuff with workoutIntervals
+	}
 	
 }

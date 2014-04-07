@@ -37,6 +37,26 @@
             android:background="@null"/>
     </LinearLayout>
     
+    
+    <!-- Workout Menu -->
+    <LinearLayout 
+        android:id="@+id/workoutmenu"
+        android:layout_width="fill_parent"
+        android:layout_height="40dip"
+        android:orientation="horizontal"
+		android:layout_below="@id/player_header_bg"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp">
+
+        <Button
+            android:id="@+id/btnWorkouts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Workouts" />
+
+    </LinearLayout>  
+    
+    
     <!-- Song Thumbnail Image -->
     <LinearLayout 
         android:id="@+id/songThumbnail"
@@ -45,7 +65,7 @@
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:gravity="center"
-        android:layout_below="@id/player_header_bg">
+        android:layout_below="@id/workoutmenu">
     	<ImageView android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/adele"/>    
@@ -157,13 +177,16 @@
         android:layout_above="@id/timerDisplay"
         android:gravity="center">
         <!-- Repeat Button -->
-        <ImageButton 
+
+     
+
+        <ImageButton
             android:id="@+id/btnRepeat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/btn_repeat"
             android:layout_marginRight="5dp"
-            android:background="@null"/>
+            android:background="@null"
+            android:src="@drawable/btn_repeat" />
         
         <!-- Shuffle Button -->        
          <ImageButton 
