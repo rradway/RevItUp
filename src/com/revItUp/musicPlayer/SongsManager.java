@@ -61,6 +61,7 @@ public class SongsManager {
 						song.put("energy", getEnergy(artist, title).toString());
 						song.put("loudness", getLoudness(artist, title).toString());
 						song.put("echoNestInfo", getInfoStr(artist, title));
+						song.put("duration",mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION).toString());
 					}
 				} catch (EchoNestException e) {
 					e.printStackTrace();

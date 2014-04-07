@@ -38,21 +38,17 @@ public class WorkoutMenuActivity extends ListActivity {
 		setContentView(R.layout.workout_menu);
 		
 		//GET OLD WORKOUTS - NOT CODED
-		// Adding menuItems to ListView
-		/*ListAdapter adapter = new SimpleAdapter(this, songsListData,
-						R.layout.playlist_item, new String[] { "songTitle" }, new int[] {
-								R.id.songTitle });
-
-				setListAdapter(adapter);*/
 		
 		
+		
+		// Adding menuItems to ListView	
 		ListView lv = getListView();
 		
 		arrayAdapter = new ArrayAdapter<String>(getBaseContext(), R.layout.playlist_item, R.id.songTitle);
 		lv.setAdapter(arrayAdapter);
 		
 		
-		// listening to single listitem click
+		// listening to single listitem click / user chose a workout
 		lv.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -97,7 +93,7 @@ public class WorkoutMenuActivity extends ListActivity {
 				Intent in = new Intent(getApplicationContext(),
 						MusicPlayerActivity.class);
 				// Sending workoutIndex to PlayerActivity
-				in.putExtra("WorkOutFlag", 0);
+				in.putExtra("WorkOutFlag", -1);
 				setResult(110, in);
 				// Closing WorkoutMenu
 				finish();	
@@ -107,11 +103,12 @@ public class WorkoutMenuActivity extends ListActivity {
 		
 	}
 	
+	//receive new workout
 	 protected void onActivityResult(int requestCode,
              int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if(resultCode == 100){
-			
+		
 			ArrayList<Integer> tWorkout = data.getExtras().getIntegerArrayList("intervallist");
 			if(tWorkout.size()>0)
 			{

@@ -94,6 +94,7 @@ public class WorkoutMakerActivity extends ListActivity {
 		
 	}
 	
+	//receive an interval
 	 protected void onActivityResult(int requestCode,
              int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
