@@ -57,20 +57,25 @@ public class SongsManager {
 					}
 					else
 					{
+						System.out.println("song:" + file.getName().substring(0, (file.getName().length() - 4)) + ": " + getTempo(artist,title).toString());
 						song.put("tempo", getTempo(artist,title).toString());
 						song.put("energy", getEnergy(artist, title).toString());
 						song.put("loudness", getLoudness(artist, title).toString());
 						song.put("echoNestInfo", getInfoStr(artist, title));
 						song.put("duration",mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION).toString());
+						
+						song.put("songTitle", file.getName().substring(0, (file.getName().length() - 4)));
+						song.put("songPath", file.getPath());
+						
+						// Adding each song to SongList
+						songsList.add(song);
 					}
 				} catch (EchoNestException e) {
 					e.printStackTrace();
 				}
-				song.put("songTitle", file.getName().substring(0, (file.getName().length() - 4)));
-				song.put("songPath", file.getPath());
 				
-				// Adding each song to SongList
-				songsList.add(song);
+				
+				
 			}
 		}
 		// return songs list array

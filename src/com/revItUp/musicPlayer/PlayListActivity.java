@@ -19,8 +19,8 @@ import android.widget.SimpleAdapter;
 
 public class PlayListActivity extends ListActivity {
 	// Songs list
-	public ArrayList<HashMap<String, String>> songsList = new ArrayList<HashMap<String, String>>();
-
+	private ArrayList<HashMap<String, String>> songsList = new ArrayList<HashMap<String, String>>();
+	private ArrayList<Integer> workoutPlayList;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -41,16 +41,34 @@ public class PlayListActivity extends ListActivity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		// looping through playlist
-		for (int i = 0; i < songsList.size(); i++) {
-			// creating new HashMap
-			HashMap<String, String> song = songsList.get(i);
-
-			// adding HashList to ArrayList
-			songsListData.add(song);
+		Bundle extras = getIntent().getExtras();
+		workoutPlayList = extras.getIntegerArrayList("wopl");
+		if(workoutPlayList==null)
+		{
+			// looping through playlist
+			for (int i = 0; i < songsList.size(); i++) {
+				// creating new HashMap
+				HashMap<String, String> song = songsList.get(i);
+	
+				// adding HashList to ArrayList
+				songsListData.add(song);
+			}
+		}
+		else
+		{
+			//list workoutplaylist
+			
+			for(int i=0;i<workoutPlayList.size();i++)
+			{
+				HashMap<String, String> song = songsList.get(workoutPlayList.get(i));
+				songsListData.add(song);
+			}
+			
 		}
 
+		
+		
+		
 		// Adding menuItems to ListView
 		ListAdapter adapter = new SimpleAdapter(this, songsListData,
 				R.layout.playlist_item, new String[] { "songTitle" }, new int[] {

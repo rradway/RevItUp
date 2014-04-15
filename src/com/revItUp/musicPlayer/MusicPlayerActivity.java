@@ -294,7 +294,11 @@ public class MusicPlayerActivity extends Activity implements OnCompletionListene
 			@Override
 			public void onClick(View arg0) {
 				Intent i = new Intent(getApplicationContext(), PlayListActivity.class);
-				startActivityForResult(i, 100);			
+				if(workoutFlag)
+				{
+					i.putExtra("wopl",workoutPlayList);
+				}
+				startActivityForResult(i, 100);	
 			}
 		});
 		
@@ -490,9 +494,7 @@ public class MusicPlayerActivity extends Activity implements OnCompletionListene
 	public void generateWorkoutPlaylist()
 	{
 		// do stuff with workoutIntervals
-		System.out.println("fdsa0");
 		PlaylistMaker pm = new PlaylistMaker(workoutIntervals);
-		System.out.println("fdsa3");
 		workoutPlayList = pm.getPlayList();
 		System.out.println("playlistlength:" + workoutPlayList.size());
 		

@@ -35,8 +35,6 @@ public class PlaylistMaker {
 	{
 		intervalList = tArray;
 		rand = new Random();
-		int x = rand.nextInt(1-0) + 0;
-		System.out.println("x:" + x);
 		playList = new ArrayList<Integer>();
 		initSongs();
 		sortSongs();
