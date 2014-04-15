@@ -1,17 +1,17 @@
 package com.revItUp.musicPlayer;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
-import java.util.concurrent.ExecutionException;
-
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.revItUp.musicPlayer.R;
-import com.revItUp.musicPlayer.SongsManager.GetSongList;
 import com.revItUp.musicPlayer.PlaylistMaker;
-
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
@@ -21,7 +21,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class MusicPlayerActivity extends Activity implements OnCompletionListener, SeekBar.OnSeekBarChangeListener {
 
@@ -30,9 +29,9 @@ public class MusicPlayerActivity extends Activity implements OnCompletionListene
 	private ImageButton btnBackward;
 	private ImageButton btnNext;
 	private ImageButton btnPrevious;
-	private ImageButton btnPlaylist;
+/*	private ImageButton btnPlaylist;
 	private ImageButton btnRepeat;
-	private ImageButton btnShuffle;
+	private ImageButton btnShuffle;*/
 	private Button btnWorkouts;
 	private SeekBar songProgressBar;
 	private TextView songTitleLabel;
@@ -43,14 +42,13 @@ public class MusicPlayerActivity extends Activity implements OnCompletionListene
 	
 	// Handler to update UI timer, progress bar etc,.
 	private Handler mHandler = new Handler();;
-	private SongsManager songManager;
-	private	GetSongList getPL;
 	private Utilities utils;
 	private int seekForwardTime = 5000; // 5000 milliseconds
 	private int seekBackwardTime = 5000; // 5000 milliseconds
 	private int currentSongIndex = 0; 
-	private boolean isShuffle = false;
-	private boolean isRepeat = false;
+	private int totalTimePlayed = 0;
+	/*private boolean isShuffle = false;
+	private boolean isRepeat = false;*/
 	private ArrayList<HashMap<String, String>> songsList = new ArrayList<HashMap<String, String>>();
 	private ArrayList<Integer> workoutIntervals;
 	private String workoutName;
@@ -69,9 +67,8 @@ public class MusicPlayerActivity extends Activity implements OnCompletionListene
 		btnBackward = (ImageButton) findViewById(R.id.btnBackward);
 		btnNext = (ImageButton) findViewById(R.id.btnNext);
 		btnPrevious = (ImageButton) findViewById(R.id.btnPrevious);
-		btnPlaylist = (ImageButton) findViewById(R.id.btnPlaylist);
-		btnRepeat = (ImageButton) findViewById(R.id.btnRepeat);
-		btnShuffle = (ImageButton) findViewById(R.id.btnShuffle);
+/*		btnRepeat = (ImageButton) findViewById(R.id.btnRepeat);
+		btnShuffle = (ImageButton) findViewById(R.id.btnShuffle);*/
 		btnWorkouts = (Button) findViewById(R.id.btnWorkouts);
 		songProgressBar = (SeekBar) findViewById(R.id.songProgressBar);
 		songTitleLabel = (TextView) findViewById(R.id.songTitle);
@@ -80,28 +77,32 @@ public class MusicPlayerActivity extends Activity implements OnCompletionListene
 		
 		// Mediaplayer
 		mp = new MediaPlayer();
-		songManager = new SongsManager();
 		utils = new Utilities();
+		// Getting all songs list
+		SharedPreferences pref = getSharedPreferences(LogInActivity.PREFS_NAME,MODE_PRIVATE);
+		String songsls = pref.getString(AnalyzeMusicActivity.PREF_SONGSLIST,null);
+		Gson gs = new Gson();
+		Type type = new TypeToken<ArrayList<HashMap<String, String>>>() {}.getType();
+		songsList = gs.fromJson(songsls, type);
+		Intent in = getIntent();
+		int tFlag = in.getExtras().getInt("WorkOutFlag");
+    	if(tFlag!=-1)
+    	{
+    		//recieve workout interval data
+    		workoutIntervals = in.getExtras().getIntegerArrayList("workout");
+    		workoutName = in.getExtras().getString("workoutName");
+    		
+    		//create playlist
+    		generateWorkoutPlaylist(songsList);
+    		
+    	}
 		
 		// Listeners
 		songProgressBar.setOnSeekBarChangeListener(this); // Important
 		mp.setOnCompletionListener(this); // Important
 		
-		// Getting all songs list
-		getPL =  songManager.new GetSongList();
-		getPL.execute();
-		try {
-			songsList = getPL.get();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		
-		// By default play first song
-	//	playSong(0);
+		
 				
 		/**
 		 * Play button click event
@@ -193,7 +194,7 @@ public class MusicPlayerActivity extends Activity implements OnCompletionListene
 						workoutFlag = false;
 					}
 				}
-				else
+				/*else
 				{
 					if(currentSongIndex < (songsList.size() - 1)){
 						playSong(currentSongIndex + 1);
@@ -203,7 +204,7 @@ public class MusicPlayerActivity extends Activity implements OnCompletionListene
 						playSong(0);
 						currentSongIndex = 0;
 					}
-				}
+				}*/
 				
 			}
 		});
@@ -240,7 +241,7 @@ public class MusicPlayerActivity extends Activity implements OnCompletionListene
 		/**
 		 * Button Click event for Repeat button
 		 * Enables repeat flag to true
-		 * */
+		 * *//*
 		btnRepeat.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
@@ -260,11 +261,11 @@ public class MusicPlayerActivity extends Activity implements OnCompletionListene
 				}	
 			}
 		});
-		
+		*/
 		/**
 		 * Button Click event for Shuffle button
 		 * Enables shuffle flag to true
-		 * */
+		 * *//*
 		btnShuffle.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
@@ -283,12 +284,12 @@ public class MusicPlayerActivity extends Activity implements OnCompletionListene
 					btnRepeat.setImageResource(R.drawable.btn_repeat);
 				}	
 			}
-		});
+		});*/
 		
-		/**
+/*		*//**
 		 * Button Click event for Play list click event
 		 * Launches list activity which displays list of songs
-		 * */
+		 * *//*
 		btnPlaylist.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
@@ -296,14 +297,16 @@ public class MusicPlayerActivity extends Activity implements OnCompletionListene
 				Intent i = new Intent(getApplicationContext(), PlayListActivity.class);
 				startActivityForResult(i, 100);			
 			}
-		});
+		});*/
 		
 		btnWorkouts.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View arg0) {
 				Intent i = new Intent(getApplicationContext(), WorkoutMenuActivity.class);
-				startActivityForResult(i,110);		
+				startActivity(i);
+				mp.release();
+				finish();
 			}
 		});
 		
@@ -332,7 +335,7 @@ public class MusicPlayerActivity extends Activity implements OnCompletionListene
         		workoutName = data.getExtras().getString("workoutName");
         		
         		//create playlist
-        		generateWorkoutPlaylist();
+        		generateWorkoutPlaylist(songsList);
         		
         	}
         }
@@ -385,25 +388,44 @@ public class MusicPlayerActivity extends Activity implements OnCompletionListene
 	/**
 	 * Background Runnable thread
 	 * */
+	@SuppressLint("NewApi")
 	private Runnable mUpdateTimeTask = new Runnable() {
-		   public void run() {
-			   long totalDuration = mp.getDuration();
-			   long currentDuration = mp.getCurrentPosition();
-			  
-			   // Displaying Total Duration time
-			   songTotalDurationLabel.setText(""+utils.milliSecondsToTimer(totalDuration));
-			   // Displaying time completed playing
-			   songCurrentDurationLabel.setText(""+utils.milliSecondsToTimer(currentDuration));
-			   
-			   // Updating progress bar
-			   int progress = (int)(utils.getProgressPercentage(currentDuration, totalDuration));
-			   //Log.d("Progress", ""+progress);
-			   songProgressBar.setProgress(progress);
-			   
-			   // Running this thread after 100 milliseconds
-		       mHandler.postDelayed(this, 100);
-		   }
-		};
+		public void run() {
+			try {
+				long totalDuration = mp.getDuration();
+				long currentDuration = mp.getCurrentPosition();
+
+				// Displaying Total Duration time
+				songTotalDurationLabel.setText(""
+						+ utils.milliSecondsToTimer(totalDuration));
+				// Displaying time completed playing
+				songCurrentDurationLabel.setText(""
+						+ utils.milliSecondsToTimer(currentDuration));
+
+				// Updating progress bar
+				int progress = (int) (utils.getProgressPercentage(
+						currentDuration, totalDuration));
+				// Log.d("Progress", ""+progress);
+				songProgressBar.setProgress(progress);
+
+				// Running this thread after 100 milliseconds
+				mHandler.postDelayed(this, 100);
+				totalTimePlayed += 100;
+				Boolean aflag =true;
+				if(totalTimePlayed >=120000&&aflag ==true){
+					currentSongIndex +=1;
+					playSong(currentSongIndex);
+					totalTimePlayed =0;
+					aflag =false;
+				}
+
+			} catch (IllegalStateException e) {
+
+			} finally {
+			}
+
+		}
+	};
 		
 	/**
 	 * 
@@ -446,16 +468,16 @@ public class MusicPlayerActivity extends Activity implements OnCompletionListene
 	@Override
 	public void onCompletion(MediaPlayer arg0) {
 		
-		// check for repeat is ON or OFF
-		if(isRepeat){
-			// repeat is on play same song again
-			playSong(currentSongIndex);
-		} else if(isShuffle){
-			// shuffle is on - play a random song
-			Random rand = new Random();
-			currentSongIndex = rand.nextInt((songsList.size() - 1) - 0 + 1) + 0;
-			playSong(currentSongIndex);
-		} else{
+//		// check for repeat is ON or OFF
+//		if(isRepeat){
+//			// repeat is on play same song again
+//			playSong(currentSongIndex);
+//		} else if(isShuffle){
+//			// shuffle is on - play a random song
+//			Random rand = new Random();
+//			currentSongIndex = rand.nextInt((songsList.size() - 1) - 0 + 1) + 0;
+//			playSong(currentSongIndex);
+//		} else{
 			//play workout music
 			if(workoutFlag)
 			{
@@ -465,8 +487,8 @@ public class MusicPlayerActivity extends Activity implements OnCompletionListene
 					//workout finished
 					workoutFlag = false;
 				}
-			}
-			else
+			//}
+/*			else
 			{
 				// no repeat or shuffle ON - play next song
 				if(currentSongIndex < (songsList.size() - 1)){
@@ -477,7 +499,7 @@ public class MusicPlayerActivity extends Activity implements OnCompletionListene
 					playSong(0);
 					currentSongIndex = 0;
 				}
-			}
+			}*/
 		}
 	}
 	
@@ -487,23 +509,22 @@ public class MusicPlayerActivity extends Activity implements OnCompletionListene
 	    mp.release();
 	 }
 	
-	public void generateWorkoutPlaylist()
-	{
+	public void generateWorkoutPlaylist(
+			ArrayList<HashMap<String, String>> songsList2) {
 		// do stuff with workoutIntervals
 		System.out.println("fdsa0");
-		PlaylistMaker pm = new PlaylistMaker(workoutIntervals);
+		PlaylistMaker pm = new PlaylistMaker(workoutIntervals, songsList2);
 		System.out.println("fdsa3");
 		workoutPlayList = pm.getPlayList();
 		System.out.println("playlistlength:" + workoutPlayList.size());
-		
-		for(int i=0;i<workoutPlayList.size();i++)
-		{
+
+		for (int i = 0; i < workoutPlayList.size(); i++) {
 			System.out.print(workoutPlayList.get(i));
 		}
 		System.out.println("\n\n");
-        workoutFlag = true;
-        workoutIndex = 0;
-        playSong(workoutPlayList.get(0));
+		workoutFlag = true;
+		workoutIndex = 0;
+		playSong(workoutPlayList.get(0));
 	}
 	
 }

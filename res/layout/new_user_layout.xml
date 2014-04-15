@@ -70,4 +70,9 @@
         android:text="Create Account"
         android:onClick="createAccount" />
 
+    <TextView
+        android:id="@+id/NewUserMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
 </LinearLayout>

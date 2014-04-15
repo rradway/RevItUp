@@ -15,26 +15,19 @@
         android:paddingRight="5dp">
         
         <!-- Song Title -->
-        <TextView 
+
+        <TextView
             android:id="@+id/songTitle"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_weight="0.97"
+            android:paddingLeft="10dp"
             android:textColor="#04b3d2"
             android:textSize="16sp"
-            android:paddingLeft="10dp"
-            android:textStyle="bold"
-            android:text="@string/hello"
-            android:layout_marginTop="10dp"/>
+            android:textStyle="bold" />
         
-        <!-- Playlist button -->
-        <ImageButton
-            android:contentDescription="@string/playlistButton"
-            android:id="@+id/btnPlaylist"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:src="@drawable/btn_playlist"
-            android:background="@null"/>
+        
     </LinearLayout>
     
     
@@ -52,7 +45,7 @@
             android:id="@+id/btnWorkouts"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Workouts" />
+            android:text="Cancel Workout" />
 
     </LinearLayout>  
     
@@ -188,13 +181,15 @@
             android:background="@null"
             android:src="@drawable/btn_repeat" />
         
-        <!-- Shuffle Button -->        
-         <ImageButton 
-            android:id="@+id/btnShuffle" 
+        <!-- Shuffle Button -->
+
+        <ImageButton
+            android:id="@+id/btnShuffle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/btn_shuffle"
             android:layout_marginLeft="5dp"
-            android:background="@null"/>
+            android:background="@null"
+            android:src="@drawable/btn_shuffle" />
+
     </LinearLayout>
 </RelativeLayout>

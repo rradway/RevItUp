@@ -9,7 +9,6 @@
         android:id="@+id/usernameText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="51dp"
         android:text="Username: "
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -39,17 +38,11 @@
         android:ems="10"
         android:inputType="textPersonName" />
 
-    <TextView
-        android:id="@+id/rememberMe"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Remember Me?"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
     <CheckBox
         android:id="@+id/rememberMeCheck"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="Remember Me?" />
 
     <Button
         android:id="@+id/logIn"
@@ -58,6 +51,14 @@
         android:onClick="logIn"
         android:text="Log In" />
 
+    <TextView
+        android:id="@+id/loginMessage"
+        android:layout_width="39dp"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:enabled="false"
+        android:textSize="10sp" />
+
     <Button
         android:id="@+id/createNewUser"
         android:layout_width="wrap_content"
@@ -65,5 +66,11 @@
         android:layout_marginBottom="64dp"
         android:onClick="createNewUser"
         android:text="Create New User" />
+
+    <CheckBox
+        android:id="@+id/reAnalyze"
+        android:layout_width="wrap_content"
+        android:layout_height="64dp"
+        android:text="reAnalyze" />
 
 </LinearLayout>

@@ -1,58 +1,81 @@
-<?xml version="1.0" encoding="utf-8"?><LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-
-    <TextView
-        android:id="@+id/txt_intervallength"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Interval Length:"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:orientation="horizontal" >
 
-    <EditText
-        android:id="@+id/txtfld_intervallength"
-        android:layout_width="155dp"
+        <TextView
+            android:id="@+id/txt_intervallength"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Interval Length(Minutes)"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <EditText
+            android:id="@+id/txtfld_intervallength"
+            android:layout_width="155dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="number" >
+
+            <requestFocus />
+        </EditText>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="number" >
+        android:orientation="horizontal" >
 
-        <requestFocus />
-    </EditText>
+        <TextView
+            android:id="@+id/txt_intensity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Interval Intensity(1-10):"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <TextView
-        android:id="@+id/txt_intensity"
-        android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/txtfld_intensity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="number" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Intensity(1-10):"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:orientation="horizontal" >
 
-    <EditText
-        android:id="@+id/txtfld_intensity"
-        android:layout_width="153dp"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="number" />
+        <TextView
+            android:id="@+id/txt_restlength"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rest Length(Minutes):"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <TextView
-        android:id="@+id/txt_restlength"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Rest Length:"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <EditText
-        android:id="@+id/txtfld_restlength"
-        android:layout_width="158dp"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="number" />
+        <EditText
+            android:id="@+id/txtfld_restlength"
+            android:layout_width="158dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="number" />
+    </LinearLayout>
 
     <Button
         android:id="@+id/btn_interval_done"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Done" />
+
+    <TextView
+        android:id="@+id/IntervalMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

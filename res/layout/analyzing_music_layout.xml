@@ -11,11 +11,4 @@
         android:text="Analyzing..."
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <ProgressBar
-        android:id="@+id/AnalysisProgressBar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.89" />
-
 </LinearLayout>

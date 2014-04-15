@@ -1,11 +1,7 @@
 package com.revItUp.musicPlayer;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.concurrent.ExecutionException;
-
 import com.revItUp.musicPlayer.R;
-import com.revItUp.musicPlayer.SongsManager.GetSongList;
 
 import android.app.ListActivity;
 import android.content.Intent;
@@ -16,9 +12,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 
 public class WorkoutMakerActivity extends ListActivity {
 	// Interval list
@@ -31,11 +25,11 @@ public class WorkoutMakerActivity extends ListActivity {
 	private EditText txtWorkoutName;
 	private Button btnNewInterval;
 	private Button btnDone;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.new_workout);
-		
 		
 		ListView lv = getListView();
 		//create list items
@@ -50,7 +44,9 @@ public class WorkoutMakerActivity extends ListActivity {
 					int position, long id) {
 				// interval click
 				// look at interval/edit !
-				
+				Intent i = new Intent(getApplicationContext(), NewIntervalActivity.class);
+				i.putExtra("IntervalData", parent.getAdapter().getItem(position).toString());
+				startActivityForResult(i,101);
 			}
 		});
 		
@@ -61,7 +57,7 @@ public class WorkoutMakerActivity extends ListActivity {
 		btnDone = (Button) findViewById(R.id.btn_workout_done);
 		txtWorkoutName = (EditText) findViewById(R.id.txtfld_workoutname);
 		
-		//tapped add new workout
+		//tapped add new interval
 		btnNewInterval.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
@@ -106,6 +102,17 @@ public class WorkoutMakerActivity extends ListActivity {
 			intervalList.add(tInterval.get(2));
 			String intervalInfo = tInterval.get(0).toString() +"; "+ tInterval.get(1).toString() +"; "+ tInterval.get(2).toString();
 			arrayAdapter.add(intervalInfo);
-		}	
+		}
+		if(resultCode ==101){
+			String oldInt = data.getExtras().getString("oldIntervalData"); 
+			arrayAdapter.remove(oldInt);
+			ArrayList<Integer> tInterval = data.getExtras().getIntegerArrayList("interval");
+			intervalList.add(tInterval.get(0));
+			intervalList.add(tInterval.get(1));
+			intervalList.add(tInterval.get(2));
+			String intervalInfo = tInterval.get(0).toString() +"; "+ tInterval.get(1).toString() +"; "+ tInterval.get(2).toString();
+			arrayAdapter.add(intervalInfo);
+		
+		}
 	 }
 }

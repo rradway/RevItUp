@@ -1,14 +1,16 @@
 package com.revItUp.musicPlayer;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.concurrent.ExecutionException;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.revItUp.musicPlayer.R;
-import com.revItUp.musicPlayer.SongsManager.GetSongList;
 
 import android.app.ListActivity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -27,20 +29,11 @@ public class PlayListActivity extends ListActivity {
 		setContentView(R.layout.playlist);
 
 		ArrayList<HashMap<String, String>> songsListData = new ArrayList<HashMap<String, String>>();
-
-		SongsManager plm = new SongsManager();
-		// get all songs from sdcard
-		GetSongList getPL =  plm.new GetSongList();
-		getPL.execute();
-		try {
-			this. songsList = getPL.get();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		SharedPreferences pref = getSharedPreferences(LogInActivity.PREFS_NAME, MODE_PRIVATE);
+		String songsls = pref.getString(AnalyzeMusicActivity.PREF_SONGSLIST, null);
+		Gson gs = new Gson();
+		Type type = new TypeToken<ArrayList<HashMap<String, String>>>(){}.getType();
+		songsList = gs.fromJson(songsls, type);
 
 		// looping through playlist
 		for (int i = 0; i < songsList.size(); i++) {

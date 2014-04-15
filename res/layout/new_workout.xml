@@ -2,59 +2,76 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical">
-    <!-- android:background="@layout/bg_player_header"-->
+    android:orientation="vertical" >
 
- 	<LinearLayout
- 	    android:id="@+id/player_header_bg"
- 	    android:layout_width="fill_parent"
- 	    android:layout_height="40dip"
- 	    android:orientation="horizontal"
- 	    android:paddingLeft="5dp"
- 	    android:paddingRight="5dp" >
+    <!-- android:background="@layout/bg_player_header" -->
 
- 	    <EditText
- 	        android:id="@+id/txtfld_workoutname"
- 	        android:layout_width="131dp"
- 	        android:layout_height="wrap_content"
- 	        android:layout_weight="0.24"
- 	        android:ems="10"
- 	        android:inputType="text"
- 	        android:text="WorkoutName" >
+    <LinearLayout
+        android:id="@+id/player_header_bg"
+        android:layout_width="fill_parent"
+        android:layout_height="40dip"
+        android:orientation="horizontal"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp" >
 
- 	        <requestFocus />
- 	    </EditText>
+        <EditText
+            android:id="@+id/txtfld_workoutname"
+            android:layout_width="131dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.24"
+            android:ems="10"
+            android:inputType="text"
+            android:text="WorkoutName" >
 
- 	    <Button
- 	        android:id="@+id/btn_newinterval"
- 	        android:layout_width="wrap_content"
- 	        android:layout_height="wrap_content"
- 	        android:text="New Interval" />
- 	</LinearLayout>
+            <requestFocus />
+        </EditText>
+
+        <Button
+            android:id="@+id/btn_newinterval"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Interval" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/player_header_bg"
+        android:layout_width="fill_parent"
+        android:layout_height="40dip"
+        android:orientation="vertical"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp" >
+
+        <TextView
+            android:id="@+id/infoTextWorkout"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:textSize="20dp"
+            android:text="IntervalTime:Intensity;RestTime" />
+    </LinearLayout>
 
     <ListView
         android:id="@android:id/list"
         android:layout_width="fill_parent"
-        android:layout_height="380dip"
+        android:layout_height="181dp"
+        android:layout_weight="0.97"
         android:divider="#242424"
         android:dividerHeight="1dp"
         android:listSelector="@drawable/list_selector" >
     </ListView>
 
-    <LinearLayout 
-        android:id="@+id/songThumbnail"
+    <LinearLayout
+        android:id="@+id/DoneButton"
         android:layout_width="fill_parent"
         android:layout_height="40dip"
-        android:orientation="horizontal"
+        android:layout_marginBottom="10dp"
         android:gravity="center"
-        android:layout_marginBottom="10dp">
+        android:orientation="horizontal" >
 
         <Button
             android:id="@+id/btn_workout_done"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Done" />
-    	
     </LinearLayout>
 
 </LinearLayout>
